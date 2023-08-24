@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 import random
-import sys  # Import modul sys untuk mengakses argumen dari command line
 
 intents = discord.Intents.default()
 intents.presences = True
@@ -29,10 +28,12 @@ async def on_message(message):
     await bot.process_commands(message)  # Penting untuk memproses perintah bot
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python main.py <channel_id>")
-        sys.exit(1)
-
-    YOUR_CHANNEL_ID = int(sys.argv[1])  # Mengambil channel ID dari argumen command line
+    # Meminta input ID saluran dari user setelah menjalankan skrip
+    YOUR_CHANNEL_ID = int(input("Masukkan ID channel: "))
+    
+    # Memastikan ID saluran yang dimasukkan valid (berupa angka)
+    if not YOUR_CHANNEL_ID:
+        print("ID channel tidak valid.")
+        exit(1)
 
     bot.run(bot_token)
