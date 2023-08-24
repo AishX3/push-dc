@@ -28,4 +28,4 @@ async def on_message(message):
 
     await bot.process_commands(message)  # Penting untuk memproses perintah bot
 
-bot.run('NTg5MTU5OTgwODAwODAyODI2.Gg3gjt.l_QbHZtDvOqsJqQB6F5ya2gq2XNDFDc7EGxqX4')
+bot.run(NTg5MTU5OTgwODAwODAyODI2.Gg3gjt.l_QbHZtDvOqsJqQB6F5ya2gq2XNDFDc7EGxqX4)
