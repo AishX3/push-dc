@@ -13,7 +13,7 @@ with open("pesan.txt", "r") as f:
     responses = f.readlines()
 
 with open("token.txt", "r") as f:
-    bot_token = f.readline().strip()
+    authorization = f.readline().strip()
 
 @bot.event
 async def on_ready():
