@@ -1,39 +1,43 @@
-import discord
-from discord.ext import commands
+import requests
 import random
+import time
+import os
+from colorama import Fore
 
-intents = discord.Intents.default()
-intents.presences = True
-intents.members = True
+# Input ID channel dari user
+channel_id = input("Masukkan ID channel: ")
 
-bot = commands.Bot(command_prefix='!', intents=intents)
+waktu2 = int(input("Set Waktu Kirim Pesan: "))  # Menyimpan waktu antara pengiriman pesan
+
+time.sleep(1)
+print("3")
+time.sleep(1)
+print("2")
+time.sleep(1)
+print("1")
+time.sleep(1)
+
+os.system('cls' if os.name == 'nt' else 'clear')
 
 with open("pesan.txt", "r") as f:
-    responses = f.readlines()
+    words = f.readlines()
 
 with open("token.txt", "r") as f:
-    bot_token = f.readline().strip()
+    authorization = f.readline().strip()
 
-@bot.event
-async def on_ready():
-    print(f'Logged in as {bot.user.name}')
+while True:
+    channel_id = channel_id.strip()
 
-@bot.event
-async def on_message(message):
-    # Cek apakah pesan bukan dari bot sendiri dan dalam saluran yang diinginkan
-    if message.author != bot.user and message.channel.id == YOUR_CHANNEL_ID:
-        response = random.choice(responses).strip()  # Memilih pesan secara acak
-        await message.channel.send(response)
+    payload = {
+        'content': random.choice(words).strip()
+    }
 
-    await bot.process_commands(message)  # Penting untuk memproses perintah bot
+    headers = {
+        'Authorization': authorization
+    }
 
-if __name__ == "__main__":
-    # Meminta input ID saluran dari user setelah menjalankan skrip
-    YOUR_CHANNEL_ID = int(input("Masukkan ID channel: "))
-    
-    # Memastikan ID saluran yang dimasukkan valid (berupa angka)
-    if not YOUR_CHANNEL_ID:
-        print("ID channel tidak valid.")
-        exit(1)
+    r = requests.post(f"https://discord.com/api/v9/channels/{channel_id}/messages", data=payload, headers=headers)
+    print(Fore.WHITE + "Sent message: ")
+    print(Fore.YELLOW + payload['content'])
 
-    bot.run(bot_token)
+    time.sleep(waktu2)  # Menunggu waktu antara pengiriman pesan
