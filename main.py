@@ -1,54 +1,38 @@
-import requests
-import time
-import os
-from colorama import Fore
+import discord
+from discord.ext import commands
+import random
+import sys  # Import modul sys untuk mengakses argumen dari command line
 
-time.sleep(1)
+intents = discord.Intents.default()
+intents.presences = True
+intents.members = True
 
-channel_id = input("Masukkan ID channel: ")
-waktu2 = int(input("Set Waktu Kirim Pesan: "))  # Menyimpan waktu antara pengiriman pesan
-
-time.sleep(1)
-print("3")
-time.sleep(1)
-print("2")
-time.sleep(1)
-print("1")
-time.sleep(1)
-
-os.system('cls' if os.name == 'nt' else 'clear')
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 with open("pesan.txt", "r") as f:
-    words = f.readlines()
+    responses = f.readlines()
 
 with open("token.txt", "r") as f:
-    authorization = f.readline().strip()
+    bot_token = f.readline().strip()
 
-# Inisialisasi variabel untuk melacak indeks pesan
-indeks_pesan = 0
+@bot.event
+async def on_ready():
+    print(f'Logged in as {bot.user.name}')
 
-while True:
-    channel_id = channel_id.strip()
+@bot.event
+async def on_message(message):
+    # Cek apakah pesan bukan dari bot sendiri dan dalam saluran yang diinginkan
+    if message.author != bot.user and message.channel.id == YOUR_CHANNEL_ID:
+        response = random.choice(responses).strip()  # Memilih pesan secara acak
+        await message.channel.send(response)
 
-    # Memastikan indeks tidak melampaui panjang daftar pesan
-    if indeks_pesan >= len(words):
-        break
+    await bot.process_commands(message)  # Penting untuk memproses perintah bot
 
-    pesan = words[indeks_pesan].strip()
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: python main.py <channel_id>")
+        sys.exit(1)
 
-    payload = {
-        'content': pesan
-    }
+    YOUR_CHANNEL_ID = int(sys.argv[1])  # Mengambil channel ID dari argumen command line
 
-    headers = {
-        'Authorization': authorization
-    }
-
-    r = requests.post(f"https://discord.com/api/v9/channels/{channel_id}/messages", data=payload, headers=headers)
-    print(Fore.WHITE + "Sent message: ")
-    print(Fore.YELLOW + pesan)
-
-    # Menaikkan indeks pesan
-    indeks_pesan += 1
-
-    time.sleep(waktu2)  # Menunggu waktu antara pengiriman pesan
+    bot.run(bot_token)
