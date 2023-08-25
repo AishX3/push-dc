@@ -1,30 +1,54 @@
-import discord
-from discord.ext import commands
-import random
+import requests
+import time
+import os
+from colorama import Fore
 
-intents = discord.Intents.default()
-intents.presences = True
-intents.members = True
+time.sleep(1)
 
-bot = commands.Bot(command_prefix='!', intents=intents)
+channel_id = input("Masukkan ID channel: ")
+waktu2 = int(input("Set Waktu Kirim Pesan: "))  # Menyimpan waktu antara pengiriman pesan
 
-responses = [
-    "Pesan balasan otomatis 1",
-    "Pesan balasan otomatis 2",
-    "Pesan balasan otomatis 3",
-    "Pesan balasan otomatis 4"
-]
+time.sleep(1)
+print("3")
+time.sleep(1)
+print("2")
+time.sleep(1)
+print("1")
+time.sleep(1)
 
-@bot.event
-async def on_ready():
-    print(f'Logged in as {bot.user.name}')
+os.system('cls' if os.name == 'nt' else 'clear')
 
-@bot.event
-async def on_message(message):
-    if message.author != bot.user and message.channel.id == 976132165450473512:
-        response = random.choice(responses)
-        await message.channel.send(response)
+with open("pesan.txt", "r") as f:
+    words = f.readlines()
 
-    await bot.process_commands(message)
+with open("token.txt", "r") as f:
+    authorization = f.readline().strip()
 
-bot.run('OTMzNTg4MTg2OTc2ODkwOTIy.GhWKgt.5ZI6VIyFLSded0vTw6wArkbDV_kQUv1VhHT_qo')
+# Inisialisasi variabel untuk melacak indeks pesan
+indeks_pesan = 0
+
+while True:
+    channel_id = channel_id.strip()
+
+    # Memastikan indeks tidak melampaui panjang daftar pesan
+    if indeks_pesan >= len(words):
+        break
+
+    pesan = words[indeks_pesan].strip()
+
+    payload = {
+        'content': pesan
+    }
+
+    headers = {
+        'Authorization': authorization
+    }
+
+    r = requests.post(f"https://discord.com/api/v9/channels/{channel_id}/messages", data=payload, headers=headers)
+    print(Fore.WHITE + "Sent message: ")
+    print(Fore.YELLOW + pesan)
+
+    # Menaikkan indeks pesan
+    indeks_pesan += 1
+
+    time.sleep(waktu2)  # Menunggu waktu antara pengiriman pesan
