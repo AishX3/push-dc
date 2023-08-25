@@ -1,8 +1,26 @@
 import requests
-import random
 import time
 import os
 from colorama import Fore
+
+print("   ____          ____       _                    ")
+print("  | __ )  __ _  |  _ \ __ _| |_ ___ _ __   __ _  ")
+print("  |  _ \ / _' | | |_) / _' | __/ _ \ '_ \ / _' | ")
+print("  | |_) | (_| | |  __/ (_| | ||  __/ | | | (_| | ")
+print("  |____/ \__, | |_|   \__,_|\__\___|_| |_|\__, | ")
+print("         |___/                            |___/  \n")
+print("=================================================")
+author = "Bg.Pateng"
+print("Author: " + author)
+script = "Push Rank Discord"
+print("Script: " + script)
+telegram = "@bangpateng_group"
+print("Telegram: " + telegram)
+youtube = "Bang Pateng"
+print("Youtube: " + youtube)
+print("===========================================")
+print('PERINGATAN : TIDAK UNTUK DI PERJUAL-BELIKAN')
+print("===========================================\n")
 
 time.sleep(1)
 
@@ -25,16 +43,17 @@ with open("pesan.txt", "r") as f:
 with open("token.txt", "r") as f:
     authorization = f.readline().strip()
 
-# Inisialisasi variabel untuk menyimpan pesan yang telah dikirim
-pesan_terkirim = ""
+# Inisialisasi variabel untuk melacak indeks pesan
+indeks_pesan = 0
 
 while True:
     channel_id = channel_id.strip()
 
-    # Pilih pesan secara acak yang belum terkirim sebelumnya
-    pesan = random.choice(words).strip()
-    while pesan == pesan_terkirim:
-        pesan = random.choice(words).strip()
+    # Memastikan indeks tidak melampaui panjang daftar pesan
+    if indeks_pesan >= len(words):
+        break
+
+    pesan = words[indeks_pesan].strip()
 
     payload = {
         'content': pesan
@@ -48,7 +67,7 @@ while True:
     print(Fore.WHITE + "Sent message: ")
     print(Fore.YELLOW + pesan)
 
-    # Simpan pesan yang telah dikirim
-    pesan_terkirim = pesan
+    # Menaikkan indeks pesan
+    indeks_pesan += 1
 
     time.sleep(waktu2)  # Menunggu waktu antara pengiriman pesan
