@@ -25,24 +25,30 @@ with open("pesan.txt", "r") as f:
 with open("token.txt", "r") as f:
     authorization = f.readline().strip()
 
-previous_message = ""  # Menyimpan pesan sebelumnya
+# Inisialisasi variabel untuk menyimpan pesan yang telah dikirim
+pesan_terkirim = ""
 
 while True:
     channel_id = channel_id.strip()
 
+    # Pilih pesan secara acak yang belum terkirim sebelumnya
+    pesan = random.choice(words).strip()
+    while pesan == pesan_terkirim:
+        pesan = random.choice(words).strip()
+
     payload = {
-        'content': random.choice(words).strip()
+        'content': pesan
     }
 
-    # Hanya kirim pesan jika pesan sebelumnya tidak sama dengan yang akan dikirim
-    if payload['content'] != previous_message:
-        headers = {
-            'Authorization': authorization
-        }
+    headers = {
+        'Authorization': authorization
+    }
 
-        r = requests.post(f"https://discord.com/api/v9/channels/{channel_id}/messages", data=payload, headers=headers)
-        print(Fore.WHITE + "Sent message: ")
-        print(Fore.YELLOW + payload['content'])
-        previous_message = payload['content']  # Menyimpan pesan sebelumnya
+    r = requests.post(f"https://discord.com/api/v9/channels/{channel_id}/messages", data=payload, headers=headers)
+    print(Fore.WHITE + "Sent message: ")
+    print(Fore.YELLOW + pesan)
+
+    # Simpan pesan yang telah dikirim
+    pesan_terkirim = pesan
 
     time.sleep(waktu2)  # Menunggu waktu antara pengiriman pesan
