@@ -1,31 +1,48 @@
-import discord
-from discord.ext import commands
+import requests
 import random
+import time
+import os
+from colorama import Fore
 
-intents = discord.Intents.default()
-intents.presences = True
-intents.members = True
+time.sleep(1)
 
-bot = commands.Bot(command_prefix='!', intents=intents)
+channel_id = input("Masukkan ID channel: ")
+waktu2 = int(input("Set Waktu Kirim Pesan: "))  # Menyimpan waktu antara pengiriman pesan
 
-responses = [
-    "bang bang1",
-    "mbja",
-    "apasi",
-    "Pesan balasan otomatis 4"
-]
+time.sleep(1)
+print("3")
+time.sleep(1)
+print("2")
+time.sleep(1)
+print("1")
+time.sleep(1)
 
-@bot.event
-async def on_ready():
-    print(f'Logged in as {bot.user.name}')
+os.system('cls' if os.name == 'nt' else 'clear')
 
-@bot.event
-async def on_message(message):
-    # Cek apakah pesan bukan dari bot sendiri dan dalam saluran yang diinginkan
-    if message.author != bot.user and message.channel.id == 976132165450473512:
-        response = random.choice(responses)  # Memilih pesan secara acak
-        await message.channel.send(response)
+with open("pesan.txt", "r") as f:
+    words = f.readlines()
 
-    await bot.process_commands(message)  # Penting untuk memproses perintah bot
+with open("token.txt", "r") as f:
+    authorization = f.readline().strip()
 
-bot.run(NTg5MTU5OTgwODAwODAyODI2.Gg3gjt.l_QbHZtDvOqsJqQB6F5ya2gq2XNDFDc7EGxqX4)
+previous_message = ""  # Menyimpan pesan sebelumnya
+
+while True:
+    channel_id = channel_id.strip()
+
+    payload = {
+        'content': random.choice(words).strip()
+    }
+
+    # Hanya kirim pesan jika pesan sebelumnya tidak sama dengan yang akan dikirim
+    if payload['content'] != previous_message:
+        headers = {
+            'Authorization': authorization
+        }
+
+        r = requests.post(f"https://discord.com/api/v9/channels/{channel_id}/messages", data=payload, headers=headers)
+        print(Fore.WHITE + "Sent message: ")
+        print(Fore.YELLOW + payload['content'])
+        previous_message = payload['content']  # Menyimpan pesan sebelumnya
+
+    time.sleep(waktu2)  # Menunggu waktu antara pengiriman pesan
