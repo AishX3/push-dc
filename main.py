@@ -3,25 +3,6 @@ import time
 import os
 from colorama import Fore
 
-print("   ____          ____       _                    ")
-print("  | __ )  __ _  |  _ \ __ _| |_ ___ _ __   __ _  ")
-print("  |  _ \ / _' | | |_) / _' | __/ _ \ '_ \ / _' | ")
-print("  | |_) | (_| | |  __/ (_| | ||  __/ | | | (_| | ")
-print("  |____/ \__, | |_|   \__,_|\__\___|_| |_|\__, | ")
-print("         |___/                            |___/  \n")
-print("=================================================")
-author = "Bg.Pateng"
-print("Author: " + author)
-script = "Push Rank Discord"
-print("Script: " + script)
-telegram = "@bangpateng_group"
-print("Telegram: " + telegram)
-youtube = "Bang Pateng"
-print("Youtube: " + youtube)
-print("===========================================")
-print('PERINGATAN : TIDAK UNTUK DI PERJUAL-BELIKAN')
-print("===========================================\n")
-
 time.sleep(1)
 
 channel_id = input("Masukkan ID channel: ")
